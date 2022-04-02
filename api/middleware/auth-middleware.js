@@ -1,6 +1,6 @@
 const Users = require('../users/users-model')
 
-const checkLoginPayload = (req, res, next) => {
+const  checkLoginPayload = (req, res, next) => {
 try {
   const { username, password } = req.body
     if (!username || !password) {
@@ -12,7 +12,7 @@ try {
 }
 } catch (err) {
      next(err)
-}}
+}} 
 
 
 const usernameUnique = async (req, res, next) => {
@@ -28,7 +28,7 @@ const usernameUnique = async (req, res, next) => {
 }}
 
 
-const validateCredentials = async (req, res, next) => {
+const validateCredentials= async (req, res, next) => {
 try {
 const user = await Users.findByUser(req.body.username)
     const password = await Users.validate(req.body.password)

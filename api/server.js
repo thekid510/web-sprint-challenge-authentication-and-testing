@@ -22,6 +22,7 @@ server.use((err, req, res, next) => { // eslint-disable-line
       stack: err.stack,
     })
   })
+  
   server.get('/', (req, res) => {res.send('Can you see this?')})
 
 

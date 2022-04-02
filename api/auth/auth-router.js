@@ -1,4 +1,4 @@
-const secrets = require('../config/secret.js');
+const {JWT_SECRET} = require('../config/secret.js');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const Users = require("../users/users-model");
@@ -6,23 +6,8 @@ const { checkLoginPayload, usernameUnique, validateCredentials,} = require('../m
 
 const router = require('express').Router();
 
-function createToken(user) {
-  const payload = {
-      subject: user.id,
-      username: user.username,
-  };
-  const options = {
-    expiresIn: '2d',
-  };
-   return jwt.sign(
-     payload,
-     secrets.jwtSecret,
-     options
-   ); 
-  }
-
 router.post('/register',usernameUnique,checkLoginPayload, (req, res) => {
-  res.end('implement register, please!');
+  // res.end('implement register, please!');
   const { username, password } = req.body
   const hash = bcrypt.hashSync(password, 8);
       Users.add({ username, password: hash })
@@ -34,7 +19,7 @@ router.post('/register',usernameUnique,checkLoginPayload, (req, res) => {
 });
 
 router.post('/login' , validateCredentials , checkLoginPayload,(req, res, next) => {
- res.end('implement login, please!');
+//  res.end('implement login, please!');
   const { username, password } = req.body
    Users.findByUser(username)
   .then(([user]) => {
@@ -51,5 +36,20 @@ router.post('/login' , validateCredentials , checkLoginPayload,(req, res, next) 
   .catch(next)
  }); 
  
+function createToken(user) {
+  const payload = {
+      subject: user.id,
+      username: user.username,
+  };
+  const options = {
+    expiresIn: '1d',
+  };
+   return jwt.sign(
+     payload,
+     JWT_SECRET,
+     options
+   ); 
+  }
+
 
 module.exports = router;
